@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+
+app = FastAPI(
+    swagger_ui_parameters={
+        "syntaxHighlight": True
+    }
+)
 
 
 @app.get("/")
