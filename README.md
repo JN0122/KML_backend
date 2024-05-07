@@ -10,3 +10,7 @@ cd KML_backend
 python -m venv .
 pip install -r requirements.txt
 ```
+# Running dev
+```bash
+fastapi dev main.py
+```
