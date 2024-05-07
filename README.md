@@ -14,3 +14,8 @@ pip install -r requirements.txt
 ```bash
 fastapi dev main.py
 ```
+
+# Running production
+```bash
+fastapi run main.py
+```
