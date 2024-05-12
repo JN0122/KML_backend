@@ -16,5 +16,5 @@ class Delivery(Base):
     ulg95 = Column(Integer)
     dk = Column(Integer)
     ultsu = Column(Integer)
-    ultdk =Column(Integer)
+    ultdk = Column(Integer)
     total = Column(Integer)
