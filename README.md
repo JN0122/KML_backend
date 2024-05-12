@@ -3,21 +3,21 @@
 # Fuelly
 Backend application to manage fuel deliveries to gas stations for a university project.
 
-# Swagger
+## Swagger
 [localhost:8000/docs](localhost:8000/docs)
 
-# Installation
+## Installation
 ```bash
 cd KML_backend
 python -m venv .
 pip install -r requirements.txt
 ```
-# Running dev
+## Running dev
 ```bash
 fastapi dev main.py
 ```
 
-# Running production
+## Running production
 ```bash
 fastapi run main.py
 ```
