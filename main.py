@@ -25,3 +25,7 @@ app.include_router(time_frame_router.router)
 def read_deliveries(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     deliveries = crud.get_deliveries(db, skip=skip, limit=limit)
     return deliveries
+
+@app.post("/deliveries/", response_model=dto.Delivery)
+def create_user(delivery: dto.DeliveryCreate, db: Session = Depends(get_db)):
+    return crud.create_delivery(db=db, delivery=delivery)
