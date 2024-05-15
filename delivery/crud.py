@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
 
-from delivery import model
 from delivery import dto
+from delivery import model
 
 
-def get_delivery_by_id(db: Session, delivery_id: int):
+def read_delivery_by_id(db: Session, delivery_id: int):
     return db.query(model.Delivery).filter(model.Delivery == delivery_id).first()
 
 
-def get_deliveries(db: Session, skip: int = 0, limit: int = 100):
+def read_deliveries(db: Session, skip: int = 0, limit: int = 100):
     return db.query(model.Delivery).offset(skip).limit(limit).all()
 
 

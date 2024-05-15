@@ -3,7 +3,7 @@ from datetime import date, time
 from pydantic import BaseModel
 
 
-class DeliveryBase(BaseModel):
+class ForecastBase(BaseModel):
     date: date
     time: time
     ulg95: int
@@ -12,11 +12,11 @@ class DeliveryBase(BaseModel):
     ultdk: int
 
 
-class DeliveryCreate(DeliveryBase):
+class ForecastCreate(ForecastBase):
     pass
 
 
-class Delivery(DeliveryCreate):
+class Forecast(ForecastCreate):
     id: int
     total: int
 

@@ -2,3 +2,5 @@ fastapi[all]
 pydantic
 sqlalchemy
 uvicorn
+numpy
+scipy
