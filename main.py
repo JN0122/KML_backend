@@ -16,7 +16,7 @@ def get_db():
     finally:
         db.close()
 
-app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True})
+app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True, "tryItOutEnabled": True})
 
 app.include_router(delivery_router.router)
 
