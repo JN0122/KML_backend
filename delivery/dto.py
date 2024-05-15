@@ -9,13 +9,13 @@ class DeliveryBase(BaseModel):
     dk: int 
     ultsu: int 
     ultdk: int
-    total: int
 
 class DeliveryCreate(DeliveryBase):
     pass
 
 class Delivery(DeliveryCreate):
     id: int
+    total: int
 
     class Config:
         orm_mode = True
