@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import time_frame_router
+from routers import delivery as delivery_router
 from sqlalchemy.orm import Session
 
 from fastapi import FastAPI, Depends, HTTPException
@@ -18,7 +18,7 @@ def get_db():
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True})
 
-app.include_router(time_frame_router.router)
+app.include_router(delivery_router.router)
 
 
 @app.get("/deliveries/", response_model=list[dto.Delivery])
