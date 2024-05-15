@@ -1,18 +1,27 @@
 from fastapi import FastAPI
-import delivery.model
 from routers import time_frame_router
+from sqlalchemy.orm import Session
 
 from fastapi import FastAPI, Depends, HTTPException
-import delivery
+from delivery import crud, dto, model
 from database import SessionLocal, engine, Base
 
 Base.metadata.create_all(bind=engine)
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True})
 
 app.include_router(time_frame_router.router)
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.get("/deliveries/", response_model=list[dto.Delivery])
+def read_deliveries(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    deliveries = crud.get_deliveries(db, skip=skip, limit=limit)
+    return deliveries
