@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-import delivery.model as model
-import delivery.dto as dto
+from delivery import model 
+from delivery import dto
 
 
 def get_delivery_by_id(db: Session, delivery_id: int):
