@@ -16,3 +16,6 @@ pyvenv.cfg
 
 # MacOS files
 *.DS_Store
+
+# Database
+sql_app.db
