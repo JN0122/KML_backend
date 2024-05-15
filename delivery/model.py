@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date, Time
 
 from database import Base
 from enums import Weekday
-from datetime import Date, Time
 
 
 class Delivery(Base):
@@ -11,7 +10,7 @@ class Delivery(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     date = Column(Date)
-    day = Column(Weekday)
+    # day = Column(Weekday)
     time = Column(Time)
     ulg95 = Column(Integer)
     dk = Column(Integer)
