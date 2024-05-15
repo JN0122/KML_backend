@@ -14,7 +14,7 @@ class DeliveryBase(BaseModel):
 class DeliveryCreate(DeliveryBase):
     pass
 
-class Delivery(DelivereBase):
+class Delivery(DeliveryCreate):
     id: int
 
     class Config:
