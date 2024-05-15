@@ -27,5 +27,5 @@ def read_deliveries(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     return deliveries
 
 @app.post("/deliveries/", response_model=dto.Delivery)
-def create_user(delivery: dto.DeliveryCreate, db: Session = Depends(get_db)):
+def create_delivery(delivery: dto.DeliveryCreate, db: Session = Depends(get_db)):
     return crud.create_delivery(db=db, delivery=delivery)
