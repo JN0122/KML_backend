@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Time
+from sqlalchemy import Column, Integer, Date, Time
 
 from database import Base
-from enums import Weekday
 
 
 class Delivery(Base):
