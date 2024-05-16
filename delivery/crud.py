@@ -12,7 +12,7 @@ def create_delivery(db: Session, delivery: dto.DeliveryCreate):
         dk=delivery.dk,
         ultsu=delivery.ultsu,
         ultdk=delivery.ultdk,
-        total=delivery.ulg95 + delivery.dk + delivery.ultsu + delivery.ultdk,
+        total=delivery.get_total(),
     )
     db.add(db_delivery)
     db.commit()
@@ -42,6 +42,7 @@ def update_delivery(db: Session, delivery: dto.DeliveryCreate, delivery_id: int)
     db_delivery.dk = delivery.dk
     db_delivery.ultsu = delivery.ultsu
     db_delivery.ultdk = delivery.ultdk
+    db_delivery.total = delivery.get_total()
 
     db.commit()
 
