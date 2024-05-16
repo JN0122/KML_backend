@@ -25,12 +25,16 @@ def read_deliveries(db: Session, skip: int = 0, limit: int = 100):
 
 
 def read_delivery_by_id(db: Session, delivery_id: int):
-    db_delivery = db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    db_delivery = (
+        db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    )
     return db_delivery
 
 
 def update_delivery(db: Session, delivery: dto.DeliveryCreate, delivery_id: int):
-    db_delivery = db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    db_delivery = (
+        db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    )
 
     db_delivery.date = delivery.date
     db_delivery.time = delivery.time
@@ -41,11 +45,15 @@ def update_delivery(db: Session, delivery: dto.DeliveryCreate, delivery_id: int)
 
     db.commit()
 
-    updated_db_delivery = db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    updated_db_delivery = (
+        db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    )
     return updated_db_delivery
 
 
 def delete_delivery(db: Session, delivery_id: int):
-    db_delivery = db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    db_delivery = (
+        db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+    )
     db.delete(db_delivery)
     db.commit()
