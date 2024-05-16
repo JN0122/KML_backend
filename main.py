@@ -1,8 +1,9 @@
 from fastapi import FastAPI
+from database.database import engine, Base
+from delivery import router as delivery_router
+from forecast import router as forecast_router
+from database import router as db_router
 
-from database import engine, Base
-from routers import delivery_router as delivery_router
-from routers import forecast_router as forecast_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -10,3 +11,4 @@ app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True, "tryItOutEnabled":
 
 app.include_router(delivery_router.router)
 app.include_router(forecast_router.router)
+app.include_router(db_router.router)

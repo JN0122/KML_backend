@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Date, Time
 
-from database import Base
+from database.database import Base
 
 
 class Delivery(Base):
