@@ -8,8 +8,8 @@ class Delivery(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
+    station_id = Column(Integer)
     date = Column(Date)
-    # day = Column(Weekday)
     time = Column(Time)
     ulg95 = Column(Integer)
     dk = Column(Integer)
