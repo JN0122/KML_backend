@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class DeliveryBase(BaseModel):
+    station_id: int
     date: date
     time: time
     ulg95: int
