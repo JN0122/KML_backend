@@ -19,7 +19,13 @@ def create_delivery(delivery: dto.DeliveryCreate, db: Session = Depends(get_db))
 
 @router.get("/", response_model=list[dto.Delivery])
 def read_all_deliveries(db: Session = Depends(get_db)):
-    deliveries = crud.read_deliveries(db)
+    deliveries = crud.read_all_deliveries(db)
+    return deliveries
+
+
+@router.get("/{station_id}", response_model=list[dto.Delivery])
+def read_deliveries_by_station_id(station_id: int, db: Session = Depends(get_db)):
+    deliveries = crud.read_deliveries_by_station_id(db, station_id)
     return deliveries
 
 
