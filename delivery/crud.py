@@ -6,6 +6,7 @@ from delivery import model
 
 def create_delivery(db: Session, delivery: dto.DeliveryCreate):
     db_delivery = model.Delivery(
+        station_id=delivery.station_id,
         date=delivery.date,
         time=delivery.time,
         ulg95=delivery.ulg95,
@@ -20,15 +21,15 @@ def create_delivery(db: Session, delivery: dto.DeliveryCreate):
     return db_delivery
 
 
-def read_deliveries(db: Session, skip: int = 0, limit: int = 100):
+def read_all_deliveries(db: Session, skip: int = 0, limit: int = 100):
     return db.query(model.Delivery).offset(skip).limit(limit).all()
 
 
-def read_delivery_by_id(db: Session, delivery_id: int):
-    db_delivery = (
-        db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
+def read_deliveries_by_station_id(db: Session, station_id: int):
+    db_deliveries = (
+        db.query(model.Delivery).filter(model.Delivery.station_id == station_id)
     )
-    return db_delivery
+    return db_deliveries
 
 
 def update_delivery(db: Session, delivery: dto.DeliveryCreate, delivery_id: int):
@@ -36,6 +37,7 @@ def update_delivery(db: Session, delivery: dto.DeliveryCreate, delivery_id: int)
         db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
     )
 
+    db_delivery.station_id = delivery.station_id
     db_delivery.date = delivery.date
     db_delivery.time = delivery.time
     db_delivery.ulg95 = delivery.ulg95
