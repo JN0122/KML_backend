@@ -27,3 +27,10 @@ fastapi dev main.py
 ```bash
 fastapi run main.py
 ```
+
+## Seeding database
+
+```bash
+fastapi dev main.py
+curl -X 'GET' 'http://localhost:8000/db/seed' -H 'accept: application/json'
+```
