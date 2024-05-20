@@ -11,6 +11,9 @@ class DeliveryBase(BaseModel):
     ultsu: int
     ultdk: int
 
+    def get_total(self):
+        return self.ulg95 + self.dk + self.ultsu + self.ultdk
+
 
 class DeliveryCreate(DeliveryBase):
     pass
