@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from delivery import dto
 from delivery import model
+from datetime import date
 
 
 def create_delivery(db: Session, delivery: dto.DeliveryCreate):
@@ -25,10 +26,13 @@ def read_all_deliveries(db: Session):
     return db.query(model.Delivery).all()
 
 
-def read_deliveries_filter(db: Session, station_id: int | None):
-    db_deliveries = (
-        db.query(model.Delivery).filter(model.Delivery.station_id == station_id)
-    )
+def read_deliveries_filter(db: Session, station_id: int | None, delivery_date: date | None):
+    db_deliveries = db.query(model.Delivery)
+    if station_id:
+        db_deliveries = db_deliveries.filter(model.Delivery.station_id == station_id)
+    if delivery_date:
+        db_deliveries = db_deliveries.filter(model.Delivery.date == delivery_date)
+
     return db_deliveries
 
 
