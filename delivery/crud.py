@@ -27,7 +27,7 @@ def read_all_deliveries(db: Session):
 
 def read_deliveries_filter(db: Session, station_id: int | None):
     db_deliveries = (
-        db.query(model.Delivery).filter(model.Delivery.station_id == station_id)
+        db.query(model.Delivery).filter(model.Delivery.station_id == station_id).all()
     )
     return db_deliveries
 
