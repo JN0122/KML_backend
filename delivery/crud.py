@@ -21,11 +21,11 @@ def create_delivery(db: Session, delivery: dto.DeliveryCreate):
     return db_delivery
 
 
-def read_all_deliveries(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(model.Delivery).offset(skip).limit(limit).all()
+def read_all_deliveries(db: Session):
+    return db.query(model.Delivery).all()
 
 
-def read_deliveries_by_station_id(db: Session, station_id: int):
+def read_deliveries_filter(db: Session, station_id: int | None):
     db_deliveries = (
         db.query(model.Delivery).filter(model.Delivery.station_id == station_id)
     )
