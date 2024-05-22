@@ -26,12 +26,14 @@ def read_all_deliveries(db: Session):
     return db.query(model.Delivery).all()
 
 
-def read_deliveries_filter(db: Session, station_id: int | None, delivery_date: date | None):
+def read_deliveries_filter(db: Session, delivery_id: int | None, station_id: int | None, delivery_date: date | None):
     db_deliveries = db.query(model.Delivery)
     if station_id:
         db_deliveries = db_deliveries.filter(model.Delivery.station_id == station_id)
     if delivery_date:
         db_deliveries = db_deliveries.filter(model.Delivery.date == delivery_date)
+    if delivery_id:
+        db_deliveries = db_deliveries.filter(model.Delivery.id == delivery_id)
 
     return db_deliveries
 
