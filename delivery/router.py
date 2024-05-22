@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from database.database import get_db
 from delivery import crud, dto
+from datetime import date
 
 router = APIRouter(
     prefix="/deliveries",
@@ -24,8 +25,8 @@ def read_all_deliveries(db: Session = Depends(get_db)):
 
 
 @router.get("/filter", response_model=list[dto.Delivery])
-def read_deliveries_by_station_id(station_id: int | None, db: Session = Depends(get_db)):
-    deliveries = crud.read_deliveries_filter(db, station_id)
+def read_deliveries_delivery(station_id: int | None = None, delivery_date: date | None = None, db: Session = Depends(get_db)):
+    deliveries = crud.read_deliveries_filter(db, station_id=station_id, delivery_date=delivery_date)
     return deliveries
 
 
