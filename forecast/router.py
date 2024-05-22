@@ -1,6 +1,9 @@
 from fastapi import APIRouter
-from forecast import dto, winters_module
-from delivery.router import read_all_deliveries
+from forecast.winters.RunWinters import RunWinters
+from delivery import crud
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from database.database import get_db
 
 router = APIRouter(
     prefix="/forecasts",
@@ -9,13 +12,8 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=list[dto.Forecast])
-def read_all_forecasts():
-    data = read_all_deliveries()
+@router.get("/")
+def calculate_future_forecasts(station_id: int, db: Session = Depends(get_db)):
+    data = crud.read_deliveries_filter(station_id=station_id, db=db)
 
-    model = winters_module.Winters(data)
-    coefs = [model.alpha, model.beta, model.gamma, model.season]
-
-    forecast = model.forecast.get(coefs)
-
-    return forecast
+    return RunWinters.for_every_fuel(data)

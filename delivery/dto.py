@@ -12,8 +12,16 @@ class DeliveryBase(BaseModel):
     ultsu: int
     ultdk: int
 
-    def get_total(self):
+    def get_total(self) -> int:
         return self.ulg95 + self.dk + self.ultsu + self.ultdk
+
+    def get_delivery_for_every_fuel(self) -> dict:
+        return {
+            "ulg95": self.ulg95,
+            "dk": self.dk,
+            "ultsu": self.ultsu,
+            "ultdk": self.ultdk
+        }
 
 
 class DeliveryCreate(DeliveryBase):

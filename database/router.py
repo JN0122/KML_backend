@@ -16,7 +16,7 @@ router = APIRouter(
 )
 
 
-@router.get("/seed")
+@router.post("/seed")
 def seed_database(db: Session = Depends(get_db)):
     data_path = "data/"
 
