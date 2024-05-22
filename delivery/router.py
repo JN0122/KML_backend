@@ -26,7 +26,7 @@ def read_all_deliveries(db: Session = Depends(get_db)):
 
 @router.get("/filter", response_model=list[dto.Delivery])
 def read_deliveries_filter(delivery_id: int | None = None, station_id: int | None = None, delivery_date: date | None = None, db: Session = Depends(get_db)):
-    deliveries = crud.read_deliveries_filter(db, station_id=station_id, delivery_date=delivery_date)
+    deliveries = crud.read_deliveries_filter(db, delivery_id=delivery_id, station_id=station_id, delivery_date=delivery_date)
     return deliveries
 
 
