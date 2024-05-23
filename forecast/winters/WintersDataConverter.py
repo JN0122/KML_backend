@@ -1,5 +1,5 @@
-from delivery.model import Delivery as DeliveryModel
 from delivery.dto import Delivery as DeliveryDto
+from delivery.model import Delivery as DeliveryModel
 
 
 class WintersDataConverter:
