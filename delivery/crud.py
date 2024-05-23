@@ -1,8 +1,9 @@
+from datetime import date
+
 from sqlalchemy.orm import Session
 
 from delivery import dto
 from delivery import model
-from datetime import date
 
 
 def create_delivery(db: Session, delivery: dto.DeliveryCreate):

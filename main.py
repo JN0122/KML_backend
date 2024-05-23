@@ -1,9 +1,9 @@
 from fastapi import FastAPI
+
+from database import router as db_router
 from database.database import engine, Base
 from delivery import router as delivery_router
 from forecast import router as forecast_router
-from database import router as db_router
-
 
 Base.metadata.create_all(bind=engine)
 

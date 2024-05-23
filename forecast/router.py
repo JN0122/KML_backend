@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from forecast.winters.RunWinters import RunWinters
-from delivery import crud
 from fastapi import Depends
 from sqlalchemy.orm import Session
+
 from database.database import get_db
+from delivery import crud
+from forecast.winters.RunWinters import RunWinters
 
 router = APIRouter(
     prefix="/forecasts",

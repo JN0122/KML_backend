@@ -1,8 +1,8 @@
 import logging
 
 from delivery.model import Delivery as DeliveryModel
-from forecast.winters.WintersDataConverter import WintersDataConverter
 from forecast.winters.Winters import Winters
+from forecast.winters.WintersDataConverter import WintersDataConverter
 from helpers.ConsoleLogger import ConsoleLogger
 
 

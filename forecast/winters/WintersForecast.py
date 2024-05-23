@@ -1,5 +1,3 @@
-
-
 class WintersForecast:
     def __init__(self, series, data_size):
         self.series = series
