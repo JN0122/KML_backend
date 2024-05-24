@@ -9,11 +9,27 @@ Backend application to manage fuel deliveries to gas stations for a university p
 [localhost:8000/docs](localhost:8000/docs)
 
 ## Installation
-
+Clone the repository and cd into it
 ```bash
+git clone https://github.com/JN0122/KML_backend
 cd KML_backend
-python -m venv .
+```
+Create venv in repository
+```bash
+python -m venv venv
 pip install -r requirements.txt
+```
+Activate venv on windows
+```bash
+.\venv\Scripts\Activate.ps1
+```
+Install requirements
+```bash
+pip install -r requirements.txt
+```
+Run fastapi development mode
+```bash
+fastapi dev main.py
 ```
 
 ## Running dev
