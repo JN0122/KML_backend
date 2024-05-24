@@ -9,6 +9,8 @@ Backend application to manage fuel deliveries to gas stations for a university p
 [localhost:8000/docs](localhost:8000/docs)
 
 ## Installation
+Application requires **Python >=3.12** to run.
+
 Clone the repository and cd into it
 ```bash
 git clone https://github.com/JN0122/KML_backend
