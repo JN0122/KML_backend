@@ -7,6 +7,7 @@ class WintersDataConverter:
         self.delivery_models: list[DeliveryModel] = delivery_models
         self.deliveries: list[DeliveryDto] = []
         self.cast_delivery_models_to_deliveries()
+        self.deliveries.sort(key=lambda d: d.date)
 
         self.series_count = 0
         self.set_series_count()
