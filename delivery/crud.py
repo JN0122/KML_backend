@@ -49,7 +49,7 @@ def read_deliveries_for_winters(db: Session, station_id: int, limit: int = 100):
 
     db_deliveries = (db_deliveries
                      .filter(model.Delivery.station_id == station_id)
-                     .order_by(model.Delivery.id.desc())
+                     .order_by(model.Delivery.date.desc())
                      .limit(limit))
 
     return db_deliveries
