@@ -9,7 +9,7 @@ class Winters:
         self.alpha = 0.05
         self.beta = 0.05
         self.gamma = 0.05
-        self.season = 3
+        self.season = 10
 
         self.series = series
         self.series_size = len(self.series)
