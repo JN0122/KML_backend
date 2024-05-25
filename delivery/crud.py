@@ -27,14 +27,30 @@ def read_all_deliveries(db: Session):
     return db.query(model.Delivery).all()
 
 
-def read_deliveries_filter(db: Session, delivery_id: int | None, station_id: int | None, delivery_date: date | None):
+def read_deliveries_filter(
+        db: Session,
+        station_id: int | None = None,
+        delivery_id: int | None = None,
+        delivery_date: date | None = None):
+
     db_deliveries = db.query(model.Delivery)
     if station_id:
         db_deliveries = db_deliveries.filter(model.Delivery.station_id == station_id)
-    if delivery_date:
-        db_deliveries = db_deliveries.filter(model.Delivery.date == delivery_date)
     if delivery_id:
         db_deliveries = db_deliveries.filter(model.Delivery.id == delivery_id)
+    if delivery_date:
+        db_deliveries = db_deliveries.filter(model.Delivery.date == delivery_date)
+
+    return db_deliveries
+
+
+def read_deliveries_for_winters(db: Session, station_id: int, limit: int = 100):
+    db_deliveries = db.query(model.Delivery)
+
+    db_deliveries = (db_deliveries
+                     .filter(model.Delivery.station_id == station_id)
+                     .order_by(model.Delivery.id.desc())
+                     .limit(limit))
 
     return db_deliveries
 
