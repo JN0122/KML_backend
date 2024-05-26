@@ -1,0 +1,21 @@
+# JetBrains files
+.idea/
+
+# VS Code files
+.vscode
+
+# Python virtual env
+.venv/
+__pycache__/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# Build dir
+/build
+
+# MacOS files
+*.DS_Store
+
+# Database
+sql_app.db
