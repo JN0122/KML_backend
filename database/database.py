@@ -18,3 +18,8 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def get_session():
+    generator = get_db()
+    return next(generator)
