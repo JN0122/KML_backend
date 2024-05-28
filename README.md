@@ -8,8 +8,6 @@ Backend application to manage fuel deliveries to gas stations for a university p
 Service is hosted on Azure:
 [https://kml-backend.azurewebsites.net/docs](https://kml-backend.azurewebsites.net/docs)
 
-___After pushing to the main branch you must seed the database manually.___
-
 ## Swagger
 
 [localhost:8000/docs](localhost:8000/docs)
