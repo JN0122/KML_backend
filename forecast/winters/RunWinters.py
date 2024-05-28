@@ -24,4 +24,4 @@ class RunWinters:
 
             self.logger.log(level=logging.INFO, msg="Winters run successfully!")
 
-        return forecasts
+        return data_converter.cast_forecasts_to_forcast_models(forecasts)

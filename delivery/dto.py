@@ -24,6 +24,16 @@ class DeliveryBase(BaseModel):
         }
 
 
+class Forecast(BaseModel):
+    station_id: int
+    date: date
+    ulg95_forecast: float
+    dk_forecast: float
+    ultsu_forecast: float
+    ultdk_forecast: float
+    id: int
+
+
 class DeliveryCreate(DeliveryBase):
     pass
 
