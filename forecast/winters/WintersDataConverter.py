@@ -1,4 +1,7 @@
+import datetime
+
 from delivery.dto import Delivery as DeliveryDto
+from delivery.dto import Forecast as ForecastDto
 from delivery.model import Delivery as DeliveryModel
 
 
@@ -33,6 +36,27 @@ class WintersDataConverter:
                 total=delivery_model.total
             )
             self.deliveries.append(delivery)
+
+    def cast_forecasts_to_forcast_models(self, forecasts: dict):
+        forecast_len = len(forecasts["ulg95"])
+        forecast_models = []
+        for key in forecasts.keys():
+            if forecast_len == len(forecasts[key]): continue
+            raise Exception("Different number of predictions for fuels")
+
+        for i in forecasts["ulg95"]:
+            date = datetime.datetime.now()
+            date += datetime.timedelta(days=i-12)
+            forecast = ForecastDto(
+                station_id=self.delivery_models[0].station_id,
+                date=date.strftime("%Y-%m-%d"),
+                ulg95_forecast=forecasts["ulg95"][i],
+                dk_forecast=forecasts["dk"][i],
+                ultsu_forecast=forecasts["ultsu"][i],
+                ultdk_forecast=forecasts["ultdk"][i],
+                id=i)
+            forecast_models.append(forecast)
+        return forecast_models
 
     def set_series_count(self):
         self.series_count = len(self.deliveries[0].get_delivery_for_every_fuel())
