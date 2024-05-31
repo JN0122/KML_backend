@@ -44,9 +44,10 @@ class WintersDataConverter:
             if forecast_len == len(forecasts[key]): continue
             raise Exception("Different number of predictions for fuels")
 
+        date_newest_delivery = min([delivery.date for delivery in self.deliveries])
+
         for i in forecasts["ulg95"]:
-            date = datetime.datetime.now()
-            date += datetime.timedelta(days=i-12)
+            date = date_newest_delivery + datetime.timedelta(days=i-12)
             forecast = ForecastDto(
                 station_id=self.delivery_models[0].station_id,
                 date=date.strftime("%Y-%m-%d"),
