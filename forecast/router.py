@@ -14,8 +14,8 @@ router = APIRouter(
 
 
 @router.get("/")
-def calculate_forecasts_for_every_fuel(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
-    data = crud.read_deliveries_for_winters(station_id=station_id, limit=350, db=db)
+def get_forecasts(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
+    data = crud.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
 
     run_winters = RunModels()
     result = run_winters.holt_winters_for_every_fuel(data, forecast_len)
