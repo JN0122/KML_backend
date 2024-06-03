@@ -8,7 +8,7 @@ class HoltWinters:
 
     def fit(self):
         self.model = ExponentialSmoothing(
-            self.series, trend='mul', seasonal='mul', seasonal_periods=12).fit(optimized=True)
+            self.series, trend='add', seasonal='add', seasonal_periods=12).fit(optimized=True)
 
     def get_forecast(self, forecast_len: int):
         if self.model is None:
