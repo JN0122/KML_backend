@@ -2,7 +2,7 @@ import logging
 
 from delivery.model import Delivery as DeliveryModel
 from forecast.winters.HoltWinters import HoltWinters
-from forecast.winters.WintersDataConverter import WintersDataConverter
+from forecast.winters.DataConverter import DataConverter
 from helpers.ConsoleLogger import ConsoleLogger
 
 
@@ -11,7 +11,7 @@ class RunModels:
         self.logger = ConsoleLogger()
 
     def holt_winters_for_every_fuel(self, delivery_models: list[DeliveryModel], forecast_len: int):
-        data_converter = WintersDataConverter(delivery_models)
+        data_converter = DataConverter(delivery_models)
 
         forecasts = {}
 
