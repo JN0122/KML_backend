@@ -6,7 +6,7 @@ from delivery.dto import Forecast as ForecastDto
 from delivery.model import Delivery as DeliveryModel
 
 
-class WintersDataConverter:
+class DataConverter:
     def __init__(self, delivery_models: list[DeliveryModel]):
         self.delivery_models: list[DeliveryModel] = delivery_models
 
