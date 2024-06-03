@@ -12,7 +12,6 @@ class RunModels:
 
     def holt_winters_for_every_fuel(self, delivery_models: list[DeliveryModel], forecast_len: int):
         data_converter = WintersDataConverter(delivery_models)
-        data_converter.convert_zeros_to_small_floats()
 
         forecasts = {}
 
