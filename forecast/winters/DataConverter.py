@@ -62,7 +62,7 @@ class DataConverter:
         for fuel in self.series_dict.keys():
             self.series_dict[fuel] = self.series_dict[fuel].map(lambda x: float(1e-4) if x == 0 else x)
 
-    def cast_forecasts_to_forcast_models(self, forecasts: dict):
+    def cast_forecasts_to_forecast_models(self, forecasts: dict):
         forecast_len = len(forecasts["ulg95"])
         forecast_models = []
         for key in forecasts.keys():

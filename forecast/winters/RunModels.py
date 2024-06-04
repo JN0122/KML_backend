@@ -25,4 +25,4 @@ class RunModels:
 
             # self.logger.log(level=logging.INFO, msg="HoltWinters run successfully!")
 
-        return data_converter.cast_forecasts_to_forcast_models(forecasts)
+        return data_converter.cast_forecasts_to_forecast_models(forecasts)
