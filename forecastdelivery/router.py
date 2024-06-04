@@ -17,8 +17,8 @@ router = APIRouter(
 @router.get("/")
 def get_forecasts_and_deliveries(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
     delivery_models = crud.read_latest_deliveries_for_station(db, station_id, forecast_len)
-    data_converter = DataConverter(delivery_models)
+    deliveries_converted = DataConverter(delivery_models)
 
     forecasts = get_forecasts(station_id, forecast_len, db)
 
-    return data_converter.deliveries
+    return deliveries_converted.deliveries
