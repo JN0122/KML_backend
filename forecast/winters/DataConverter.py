@@ -2,7 +2,7 @@ import datetime
 import pandas as pd
 
 from delivery.dto import Delivery as DeliveryDto
-from delivery.dto import Forecast as ForecastDto
+from forecast.dto import Forecast as ForecastDto
 from delivery.model import Delivery as DeliveryModel
 
 
@@ -20,6 +20,8 @@ class DataConverter:
         self.series_dict = {}
         self.set_series_dict()
 
+
+    # This converts SQL_Alchemy model to DTO for later use
     def cast_delivery_models_to_deliveries(self):
         if len(self.deliveries) > 0:
             print(f"Deliveries dict is not empty, skipping...")
@@ -60,7 +62,7 @@ class DataConverter:
         for fuel in self.series_dict.keys():
             self.series_dict[fuel] = self.series_dict[fuel].map(lambda x: float(1e-4) if x == 0 else x)
 
-    def cast_forecasts_to_forcast_models(self, forecasts: dict):
+    def cast_forecasts_to_forecast_models(self, forecasts: dict):
         forecast_len = len(forecasts["ulg95"])
         forecast_models = []
         for key in forecasts.keys():
