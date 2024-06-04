@@ -6,7 +6,6 @@ from database.database import get_db
 from delivery import crud
 
 from forecast.winters.RunModels import RunModels
-from forecast.winters.RunWinters import RunWinters
 from forecast.tank_allocation import process_tank_data
 
 router = APIRouter(
@@ -27,9 +26,9 @@ def get_forecasts(station_id: int, forecast_len: int, db: Session = Depends(get_
 
 @router.get("/{station_id}")
 def calculate_forecasts_for_every_fuel(station_id: int, db: Session = Depends(get_db)):
-    data = crud.read_deliveries_for_winters(station_id=station_id, limit=350, db=db)
-    run_winters = RunWinters()
-    return run_winters.for_every_fuel(data)
+    data = crud.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
+    run_models = RunModels()
+    return run_models.holt_winters_for_every_fuel(data, 100)
 
 
 @router.get("/tank_allocation/{station_id}")
