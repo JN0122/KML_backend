@@ -20,6 +20,8 @@ class DataConverter:
         self.series_dict = {}
         self.set_series_dict()
 
+
+    # This converts SQL_Alchemy model to DTO for later use
     def cast_delivery_models_to_deliveries(self):
         if len(self.deliveries) > 0:
             print(f"Deliveries dict is not empty, skipping...")
