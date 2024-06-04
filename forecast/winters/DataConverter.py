@@ -2,7 +2,7 @@ import datetime
 import pandas as pd
 
 from delivery.dto import Delivery as DeliveryDto
-from delivery.dto import Forecast as ForecastDto
+from forecast.dto import Forecast as ForecastDto
 from delivery.model import Delivery as DeliveryModel
 
 
