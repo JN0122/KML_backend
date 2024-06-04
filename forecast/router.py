@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 
 from database.database import get_db
 from delivery import crud
+
+from forecast.winters.RunModels import RunModels
 from forecast.winters.RunWinters import RunWinters
 from forecast.tank_allocation import process_tank_data
 
@@ -13,6 +15,15 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+
+
+@router.get("/")
+def get_forecasts(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
+    data = crud.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
+
+    run_winters = RunModels()
+    result = run_winters.holt_winters_for_every_fuel(data, forecast_len)
+    return result
 
 @router.get("/{station_id}")
 def calculate_forecasts_for_every_fuel(station_id: int, db: Session = Depends(get_db)):
@@ -43,3 +54,4 @@ def calculate_tank_allocation(station_id: int, db: Session = Depends(get_db)):
     }
     start_date_str = "2024-01-01"
     return process_tank_data(data, start_date_str, station_id)
+

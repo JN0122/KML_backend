@@ -44,7 +44,7 @@ def read_deliveries_filter(
     return db_deliveries
 
 
-def read_deliveries_for_winters(db: Session, station_id: int, limit: int = 100):
+def read_latest_deliveries_for_station(db: Session, station_id: int, limit: int = 100):
     db_deliveries = db.query(model.Delivery)
 
     db_deliveries = (db_deliveries

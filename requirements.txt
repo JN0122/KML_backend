@@ -4,3 +4,4 @@ sqlalchemy
 uvicorn
 numpy
 scipy
+statsmodels
