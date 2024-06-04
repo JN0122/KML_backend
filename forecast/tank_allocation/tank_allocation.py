@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 
 def process_tank_data(data, start_date_str, station_id):
     # Initialize variables and divide all values by 2
-    ulg95 = {k: v for k, v in data['ulg95'].items()}
-    dk = {k: v for k, v in data['dk'].items()}
-    ultsu = {k: v for k, v in data['ultsu'].items()}
-    ultdk = {k: v for k, v in data['ultdk'].items()}
+    ulg95 = {k: v / 2 for k, v in data['ulg95'].items()}
+    dk = {k: v / 2 for k, v in data['dk'].items()}
+    ultsu = {k: v / 2 for k, v in data['ultsu'].items()}
+    ultdk = {k: v / 2 for k, v in data['ultdk'].items()}
 
     # Tank capacities
     tanks = [7400, 6100, 4000, 8500, 10000]
