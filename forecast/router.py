@@ -14,8 +14,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-
-
 @router.get("/")
 def get_forecasts(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
     data = crud.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)

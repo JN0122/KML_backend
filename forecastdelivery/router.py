@@ -21,4 +21,5 @@ def get_forecasts_and_deliveries(station_id: int, forecast_len: int, db: Session
 
     forecasts = get_forecasts(station_id, forecast_len, db)
 
+
     return deliveries_converted.deliveries
