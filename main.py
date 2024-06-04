@@ -12,9 +12,8 @@ app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True, "tryItOutEnabled":
 
 app.include_router(delivery_router.router)
 app.include_router(forecast_router.router)
-app.include_router(db_router.router)
-app.include_router(db_router.router)
 app.include_router(forecastdelivery_router.router)
+app.include_router(db_router.router)
 
 # run on start
 db_router.seed_database(get_session())
