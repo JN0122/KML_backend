@@ -27,14 +27,14 @@ def get_forecasts(station_id: int, forecast_len: int, db: Session = Depends(get_
 
 
 @router.get("/with_tank_allocation")
-def get_forecasts_with_tank_allocation(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
+def get_forecasts_with_tank_allocation(station_id: int, db: Session = Depends(get_db)):
     delivery_models = crud_delivery.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
 
     run_holt_winters = RunModels(delivery_models)
-    forecasts = run_holt_winters.for_every_fuel(forecast_len)
+    forecasts = run_holt_winters.for_every_fuel(20)
 
-    last_tank_residual = crud_forecast.read_latest_tank_residual_for_station(db, station_id, limit=1)[0]
+    last_tank_residual = crud_forecast.read_latest_tank_residual_for_station(db, station_id)
 
-    json, residual_fuel = process_tank_data(forecasts, last_tank_residual)
+    json, _ = process_tank_data(forecasts, last_tank_residual)
 
     return json

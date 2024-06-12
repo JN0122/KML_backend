@@ -29,6 +29,11 @@ class TankResidualBase(BaseModel):
                 self.ultsu = fuel[1]
             elif fuel[0] == "ultdk":
                 self.ultdk = fuel[1]
+    
+    def is_empty(self) -> bool:
+        if self.ulg95 or self.dk or self.ultsu or self.ultdk:
+            return False
+        return True
 
 class TankResidualCreate(TankResidualBase):
     pass

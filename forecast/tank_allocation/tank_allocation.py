@@ -1,15 +1,21 @@
+from datetime import datetime, timedelta, date
+
 from forecast import dto
 import pandas as pd
 
 
-def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate):
+def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate, iteration = 0):
     # Przygotowanie danych wejściowych na podstawie inicjalizowanych wartości paliw
     paliwa = [
-        ("ulg95", tank_residual.ulg95 + dane["ulg95"].iloc[0]),
-        ("dk", tank_residual.dk + dane["dk"].iloc[0]),
-        ("ultsu", tank_residual.ultsu + dane["ultsu"].iloc[0]),
-        ("ultdk", tank_residual.ultdk + dane["ultdk"].iloc[0])
+        ("ulg95", tank_residual.ulg95 + dane["ulg95"].iloc[iteration]),
+        ("dk", tank_residual.dk + dane["dk"].iloc[iteration]),
+        ("ultsu", tank_residual.ultsu + dane["ultsu"].iloc[iteration]),
+        ("ultdk", tank_residual.ultdk + dane["ultdk"].iloc[iteration])
     ]
+    
+
+    dt = datetime.combine(tank_residual.delivery_date, datetime.min.time()) + timedelta(days=iteration)
+    date = dt.date()
 
     # Zbiorniki zawsze te same
     pojemniki = [7400, 6100, 8500, 10000, 4000]
@@ -19,7 +25,12 @@ def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCrea
             przypisanie = []
 
         if not paliwa or not pojemniki:
-            residual = dto.TankResidualBase(station_id=tank_residual.station_id, delivery_date=tank_residual.delivery_date, ulg95=0, dk=0, ultdk=0, ultsu=0)
+            residual = dto.TankResidualBase(station_id=tank_residual.station_id, 
+                                            delivery_date=date, 
+                                            ulg95=0, 
+                                            dk=0, 
+                                            ultdk=0, 
+                                            ultsu=0)
             residual.add_tank_residual_from_list(paliwa)
             return przypisanie, residual
 
@@ -35,7 +46,7 @@ def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCrea
 
         tank_data = {
             "station_id": tank_residual.station_id,
-            "date": tank_residual.delivery_date,
+            "date": date,
             "capacity": najw_pojemnik,
             "ulg95": 0,
             "dk": 0,
@@ -59,6 +70,9 @@ def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCrea
 
     # Wywołanie funkcji
     przypisanie, nieprzydzielone_paliwa = przydziel_paliwo(paliwa, pojemniki)
+
+    if nieprzydzielone_paliwa.is_empty():
+        return process_tank_data(dane, tank_residual, iteration+1)
 
     # Wynikowa struktura danych
     wynik = []
