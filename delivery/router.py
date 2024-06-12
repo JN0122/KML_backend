@@ -26,16 +26,25 @@ def read_all_deliveries(db: Session = Depends(get_db)):
 
 
 @router.get("/filter", response_model=list[dto.Delivery])
-def read_deliveries_filter(delivery_id: int | None = None, station_id: int | None = None,
-                           delivery_date: date | None = None, db: Session = Depends(get_db)):
-    deliveries = crud.read_deliveries_filter(db, delivery_id=delivery_id, station_id=station_id,
-                                             delivery_date=delivery_date)
+def read_deliveries_filter(
+    delivery_id: int | None = None,
+    station_id: int | None = None,
+    delivery_date: date | None = None,
+    db: Session = Depends(get_db),
+):
+    deliveries = crud.read_deliveries_filter(
+        db, delivery_id=delivery_id, station_id=station_id, delivery_date=delivery_date
+    )
     return deliveries
 
 
 @router.put("/{delivery_id}", response_model=dto.Delivery)
-def update_delivery(delivery_id: int, delivery: dto.DeliveryCreate, db: Session = Depends(get_db)):
-    updated_delivery = crud.update_delivery(db=db, delivery_id=delivery_id, delivery=delivery)
+def update_delivery(
+    delivery_id: int, delivery: dto.DeliveryCreate, db: Session = Depends(get_db)
+):
+    updated_delivery = crud.update_delivery(
+        db=db, delivery_id=delivery_id, delivery=delivery
+    )
     return updated_delivery
 
 
