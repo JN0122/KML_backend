@@ -38,6 +38,18 @@ def read_deliveries_filter(
     return deliveries
 
 
+@router.get("/latest", response_model=list[dto.Delivery])
+def read_latest_deliveries(
+    station_id: int | None = None,
+    limit: int | None = None,
+    db: Session = Depends(get_db),
+):
+    deliveries = crud.read_latest_deliveries_for_station(
+        db=db, station_id=station_id, limit=limit
+    )
+    return deliveries
+
+
 @router.put("/{delivery_id}", response_model=dto.Delivery)
 def update_delivery(
     delivery_id: int, delivery: dto.DeliveryCreate, db: Session = Depends(get_db)
