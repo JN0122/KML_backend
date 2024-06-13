@@ -4,7 +4,7 @@ from forecast import dto
 import pandas as pd
 
 
-def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate, iteration = 0):
+def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate, iteration = 1):
     # Przygotowanie danych wejściowych na podstawie inicjalizowanych wartości paliw
 
     paliwa = [
