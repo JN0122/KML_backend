@@ -16,3 +16,7 @@ class ModelDtoCasting:
             id=delivery_model.id,
             total=delivery_model.total
         )
+    
+    @staticmethod
+    def delivery_models_to_delivery_dtos(delivery_models: list[DeliveryModel]):
+        return [ModelDtoCasting.delivery_model_to_delivery_dto(delivery) for delivery in delivery_models]

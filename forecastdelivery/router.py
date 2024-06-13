@@ -15,9 +15,9 @@ router = APIRouter(
 
 
 @router.get("/")
-def get_forecasts_and_deliveries(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
+def get_forecasts_and_deliveries(station_id: int, forecast_len: int = 10, db: Session = Depends(get_db)):
     delivery_models = crud.read_latest_deliveries_for_station(db, station_id, forecast_len)
-    delivery_dtos = ModelDtoCasting.delivery_model_to_delivery_dto(delivery_models)
+    delivery_dtos = ModelDtoCasting.delivery_models_to_delivery_dtos(delivery_models)
 
     forecasts = get_forecasts(station_id, forecast_len, db)
 
