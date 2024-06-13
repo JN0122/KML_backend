@@ -3,7 +3,9 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from database.database import get_db
-from delivery import crud
+from delivery import crud as crud_delivery
+from forecast import crud as crud_forecast
+from forecast import dto as dto_forecast
 
 from forecast.holt_winters.RunModels import RunModels
 from forecast.tank_allocation.tank_allocation import process_tank_data
@@ -18,18 +20,21 @@ router = APIRouter(
 
 @router.get("/")
 def get_forecasts(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
-    delivery_models = crud.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
+    delivery_models = crud_delivery.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
 
     run_holt_winters = RunModels(delivery_models)
     return run_holt_winters.for_every_fuel_as_dtos(forecast_len)
 
 
 @router.get("/with_tank_allocation")
-def get_forecasts_with_tank_allocation(station_id: int, forecast_len: int, db: Session = Depends(get_db)):
-    delivery_models = crud.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
+def get_forecasts_with_tank_allocation(station_id: int, db: Session = Depends(get_db)):
+    delivery_models = crud_delivery.read_latest_deliveries_for_station(station_id=station_id, limit=350, db=db)
 
     run_holt_winters = RunModels(delivery_models)
-    forecasts = run_holt_winters.for_every_fuel(forecast_len)
+    forecasts = run_holt_winters.for_every_fuel(20)
 
-    start_date_str = "2024-01-01"
-    return process_tank_data(forecasts, start_date_str, station_id)
+    last_tank_residual = crud_forecast.read_latest_tank_residual_for_station(db, station_id)
+
+    json, _ = process_tank_data(forecasts, last_tank_residual)
+
+    return json
