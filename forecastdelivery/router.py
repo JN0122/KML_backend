@@ -15,10 +15,13 @@ router = APIRouter(
 
 
 @router.get("/")
-def get_forecasts_and_deliveries(station_id: int, forecast_len: int = 10, db: Session = Depends(get_db)):
-    delivery_models = crud.read_latest_deliveries_for_station(db, station_id, forecast_len)
+def get_forecasts_and_deliveries(station_id: int, delivery_len: int = 20, forecast_len: int = 10, db: Session = Depends(get_db)):
+    delivery_models = crud.read_latest_deliveries_for_station(db, station_id, delivery_len)
     delivery_dtos = ModelDtoCasting.delivery_models_to_delivery_dtos(delivery_models)
 
-    forecasts = get_forecasts(station_id, forecast_len, db)
+    forecasts = get_forecasts(station_id, delivery_len + forecast_len, db)
+    start_date = min([delivery.date for delivery in delivery_models])
+    ModelDtoCasting.change_forecast_start_date(start_date, forecasts)
 
-    return forecasts + delivery_dtos
+    deliveryforecasts = ModelDtoCasting.forecast_and_delivery_model_to_deliveryforecast_dto(forecasts=forecasts, deliveries=delivery_dtos)
+    return deliveryforecasts

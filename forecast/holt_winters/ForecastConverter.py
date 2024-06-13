@@ -11,12 +11,12 @@ class ForecastConverter:
 
         forecast_len = ForecastConverter.__get_forecast_len(forecasts)
         prepared_forecasts = ForecastConverter.__fillna_in_forecasts(forecasts)
-        oldest_delivery_date = min([delivery.date for delivery in delivery_models])
+        newest_delivery_date = max([delivery.date for delivery in delivery_models])
 
         for i in range(forecast_len):
             forecast_dto = ForecastConverter.__create_forecast_dto(
                 station_id=delivery_models[0].station_id,
-                date=oldest_delivery_date + datetime.timedelta(days=i),
+                date=newest_delivery_date + datetime.timedelta(days=i+1),
                 forecasts=prepared_forecasts,
                 i=i
             )
