@@ -2,7 +2,7 @@ import os
 
 from fastapi import APIRouter
 
-from database.seed_database import *
+from database.crud import *
 from delivery import model as model_delivery
 from forecast import model as model_tank_residual
 
