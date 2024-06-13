@@ -9,6 +9,18 @@ class Forecast(BaseModel):
     dk_forecast: float
     ultsu_forecast: float
     ultdk_forecast: float
+
+class DeliveryForecast(BaseModel):
+    station_id: int
+    date: date
+    ulg95_forecast: float
+    dk_forecast: float
+    ultsu_forecast: float
+    ultdk_forecast: float
+    ulg95: int | None
+    dk: int | None
+    ultsu: int | None
+    ultdk: int | None
     id: int
 
 class TankResidualBase(BaseModel):
