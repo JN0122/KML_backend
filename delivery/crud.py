@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from sqlalchemy.orm import Session
 
@@ -22,6 +22,23 @@ def create_delivery(db: Session, delivery: dto.DeliveryCreate):
     db.refresh(db_delivery)
     return db_delivery
 
+def fill_delivery_gap_with_empty_deliveries(db: Session, start_delivery: dto.DeliveryCreate, end_delivery: dto.DeliveryCreate):
+        day_delta = end_delivery.date - start_delivery.date
+
+        if day_delta.days == 1: return
+        empty_delivery = dto.DeliveryCreate(
+                                station_id=start_delivery.station_id,
+                                date=start_delivery.date,
+                                time=start_delivery.time,
+                                ulg95=0, 
+                                dk=0, 
+                                ultsu=0, 
+                                ultdk=0
+                                )
+        
+        for i in range(1, day_delta.days):
+            empty_delivery.date = start_delivery.date + timedelta(i) 
+            create_delivery(db, empty_delivery)
 
 def read_all_deliveries(db: Session):
     return db.query(model.Delivery).all()
