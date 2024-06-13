@@ -28,10 +28,11 @@ def read_all_deliveries(db: Session):
 
 
 def read_deliveries_filter(
-        db: Session,
-        station_id: int | None = None,
-        delivery_id: int | None = None,
-        delivery_date: date | None = None):
+    db: Session,
+    station_id: int | None = None,
+    delivery_id: int | None = None,
+    delivery_date: date | None = None,
+):
 
     db_deliveries = db.query(model.Delivery)
     if station_id:
@@ -47,10 +48,11 @@ def read_deliveries_filter(
 def read_latest_deliveries_for_station(db: Session, station_id: int, limit: int = 100):
     db_deliveries = db.query(model.Delivery)
 
-    db_deliveries = (db_deliveries
-                     .filter(model.Delivery.station_id == station_id)
-                     .order_by(model.Delivery.date.desc())
-                     .limit(limit))
+    db_deliveries = (
+        db_deliveries.filter(model.Delivery.station_id == station_id)
+        .order_by(model.Delivery.date.desc())
+        .limit(limit)
+    )
 
     return db_deliveries
 
