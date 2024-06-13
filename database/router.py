@@ -1,10 +1,11 @@
-import os
-
 from fastapi import APIRouter
 
-from database.crud import *
-from delivery import model as model_delivery
-from forecast import model as model_tank_residual
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from database.database import get_db
+
+from database.crud import seed_database as seed_database_crud 
+from database.crud import delete_database as delete_database_crud 
 
 router = APIRouter(
     prefix="/db",
@@ -15,24 +16,10 @@ router = APIRouter(
 
 @router.post("/seed")
 def seed_database(db: Session = Depends(get_db)):
-    data_path = "data/"
+    return seed_database_crud(db=db)
 
-    if not check_is_empty(db):
-        return "Db is not empty"
-
-    station_id = 1
-    for station_file in os.listdir(data_path):
-        seed_db_from_csv(os.path.join(data_path, station_file), station_id, db)
-        create_empty_tank_residual_for_station(db, station_id)
-        station_id += 1
-
-    return "Ok! Db seeded"
 
 @router.delete("/delete")
 def delete_database(db: Session = Depends(get_db)):
-    db.query(model_delivery.Delivery).delete()
-    db.query(model_tank_residual.TankResidual).delete()
-    db.commit()
-
-    return "Ok! Db removed"
+    return delete_database_crud(db=db)
 
