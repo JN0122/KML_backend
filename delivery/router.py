@@ -6,6 +6,12 @@ from sqlalchemy.orm import Session
 
 from database.database import get_db
 from delivery import crud, dto
+from forecast import crud as crud_forecast
+
+from forecast.holt_winters.RunModels import RunModels
+from forecast.tank_allocation.tank_allocation import allocate_tanks
+from forecast.helper import *
+from helpers.DataConverters.TankAllocationConverter import TankAllocationConverter
 
 router = APIRouter(
     prefix="/deliveries",
@@ -17,6 +23,18 @@ router = APIRouter(
 @router.post("/", response_model=dto.Delivery)
 def create_delivery(delivery: dto.DeliveryCreate, db: Session = Depends(get_db)):
     return crud.create_delivery(db, delivery)
+
+
+@router.post("/approve", response_model=dto.Delivery)
+def approve_delivery(station_id: int, db: Session = Depends(get_db)):
+    tank_allocation, residual = get_forecasts_with_tank_allocation_and_residuals(station_id, db)
+
+    delivery_create = TankAllocationConverter.get_delivery_create_from_tank_allocation(tank_allocation)
+    delivery_created = crud.create_delivery(db, delivery_create)
+
+    crud_forecast.create_tank_residual(tank_residual=residual, db=db)
+
+    return delivery_created
 
 
 @router.get("/", response_model=list[dto.Delivery])
