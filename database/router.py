@@ -3,6 +3,8 @@ import os
 from fastapi import APIRouter
 
 from database.seed_database import *
+from delivery import model as model_delivery
+from forecast import model as model_tank_residual
 
 router = APIRouter(
     prefix="/db",
@@ -25,3 +27,12 @@ def seed_database(db: Session = Depends(get_db)):
         station_id += 1
 
     return "Ok! Db seeded"
+
+@router.delete("/delete")
+def delete_database(db: Session = Depends(get_db)):
+    db.query(model_delivery.Delivery).delete()
+    db.query(model_tank_residual.TankResidual).delete()
+    db.commit()
+
+    return "Ok! Db removed"
+
