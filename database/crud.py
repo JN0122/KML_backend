@@ -39,6 +39,13 @@ def delete_database(db: Session = Depends(get_db)):
     return "Ok! Db removed"
 
 
+def reset_database(db: Session = Depends(get_db)):
+    delete_database(db=db)
+    seed_database(db=db)
+
+    return "Ok! Db was reset"
+
+
 def __check_is_empty(db: Session = Depends(get_db)):
     all_deliveries = crud_delivery.read_all_deliveries(db=db)
     return all_deliveries == []
