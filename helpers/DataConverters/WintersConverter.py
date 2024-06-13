@@ -2,10 +2,10 @@ import pandas as pd
 
 from delivery.dto import Delivery as DeliveryDto
 from delivery.model import Delivery as DeliveryModel
-from helpers.ModelDtoCasting import ModelDtoCasting
+from helpers.DataConverters.ModelDtoCasting import ModelDtoCasting
 
 
-class DataConverter:
+class WintersConverter:
     @staticmethod
     def delivery_models_to_delivery_dtos(delivery_models: list[DeliveryModel]) -> list[DeliveryDto]:
         result = []

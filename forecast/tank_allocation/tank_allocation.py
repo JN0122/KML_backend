@@ -4,15 +4,15 @@ from forecast import dto
 import pandas as pd
 
 
-def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate, iteration = 0):
+def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate, iteration = 0):
     # Przygotowanie danych wejściowych na podstawie inicjalizowanych wartości paliw
+
     paliwa = [
         ("ulg95", tank_residual.ulg95 + dane["ulg95"].iloc[iteration]),
         ("dk", tank_residual.dk + dane["dk"].iloc[iteration]),
         ("ultsu", tank_residual.ultsu + dane["ultsu"].iloc[iteration]),
         ("ultdk", tank_residual.ultdk + dane["ultdk"].iloc[iteration])
     ]
-    
 
     dt = datetime.combine(tank_residual.delivery_date, datetime.min.time()) + timedelta(days=iteration)
     date = dt.date()
@@ -72,7 +72,7 @@ def process_tank_data(dane: dict[pd.Series], tank_residual: dto.TankResidualCrea
     przypisanie, nieprzydzielone_paliwa = przydziel_paliwo(paliwa, pojemniki)
 
     if nieprzydzielone_paliwa.is_empty():
-        return process_tank_data(dane, tank_residual, iteration+1)
+        return allocate_tanks(dane, tank_residual, iteration + 1)
 
     # Wynikowa struktura danych
     wynik = []

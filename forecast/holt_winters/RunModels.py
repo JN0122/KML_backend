@@ -2,8 +2,8 @@ import logging
 
 from delivery.model import Delivery as DeliveryModel
 from forecast.holt_winters.HoltWinters import HoltWinters
-from forecast.holt_winters.DataConverter import DataConverter
-from forecast.holt_winters.ForecastConverter import ForecastConverter
+from helpers.DataConverters.WintersConverter import WintersConverter
+from helpers.DataConverters.ForecastConverter import ForecastConverter
 from helpers.ConsoleLogger import ConsoleLogger
 from forecast.dto import Forecast as ForecastDto
 
@@ -20,17 +20,17 @@ class RunModels:
     def for_every_fuel(self, forecast_len: int) -> dict:
         result = {}
 
-        delivery_dtos = DataConverter.delivery_models_to_delivery_dtos(self.delivery_models)
+        delivery_dtos = WintersConverter.delivery_models_to_delivery_dtos(self.delivery_models)
         delivery_dtos.sort(key=lambda d: d.date)
 
-        series_for_every_fuel = DataConverter.get_series_for_every_fuel(delivery_dtos)
+        series_for_every_fuel = WintersConverter.get_series_for_every_fuel(delivery_dtos)
         fuels = series_for_every_fuel.keys()
 
         for fuel in fuels:
             self.logger.log(level=logging.INFO, msg=f"Starting HoltWinters for series \"{fuel}\".")
 
             series = series_for_every_fuel[fuel]
-            series = DataConverter.convert_zeros_to_small_floats(series)
+            series = WintersConverter.convert_zeros_to_small_floats(series)
 
             holt_winters = HoltWinters(series)
             holt_winters.fit()
