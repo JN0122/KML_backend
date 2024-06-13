@@ -29,7 +29,10 @@ def create_delivery(delivery: dto.DeliveryCreate, db: Session = Depends(get_db))
 def approve_delivery(station_id: int, db: Session = Depends(get_db)):
     tank_allocation, residual = get_forecasts_with_tank_allocation_and_residuals(station_id, db)
 
+    previous_delivery = crud.read_latest_deliveries_for_station(db, station_id, limit=1)[0]
     delivery_create = TankAllocationConverter.get_delivery_create_from_tank_allocation(tank_allocation)
+
+    crud.fill_delivery_gap_with_empty_deliveries(db, previous_delivery, delivery_create)
     delivery_created = crud.create_delivery(db, delivery_create)
 
     crud_forecast.create_tank_residual(tank_residual=residual, db=db)
