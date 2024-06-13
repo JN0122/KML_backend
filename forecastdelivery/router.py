@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from delivery import crud
 from forecast.router import get_forecasts
-from helpers.ModelDtoCasting import ModelDtoCasting
+from helpers.DataConverters.ModelDtoCasting import ModelDtoCasting
 
 router = APIRouter(
     prefix="/forecasts_and_deliveries",
