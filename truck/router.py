@@ -51,6 +51,14 @@ def get_brake_pads_info(truck_id: int, db: Session = Depends(get_db)):
 
     return {"brake_pads_km_left": db_truck.brake_pads_km_left}
 
+@router.get("/{truck_id}/oil", response_model=dict)
+def get_oil_info(truck_id: int, db: Session = Depends(get_db)):
+    db_truck = crud.get_truck(db, truck_id)
+    if db_truck is None:
+        raise HTTPException(status_code=404, detail="Truck not found")
+
+    return {"oil_change_km_left": db_truck.oil_change_km_left}
+
 
 @router.put("/{truck_id}", response_model=dto.Truck)
 def update_truck(truck_id: int, truck: dto.TruckCreate, db: Session = Depends(get_db)):
