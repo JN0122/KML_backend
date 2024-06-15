@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.database import get_db
 from truck import crud, dto
+from utilsalgorithm import calculate_trips_left
 
 router = APIRouter(
     prefix="/trucks",
@@ -12,6 +13,23 @@ router = APIRouter(
 @router.post("/", response_model=dto.Truck)
 def create_truck(truck: dto.TruckCreate, db: Session = Depends(get_db)):
     return crud.create_truck(db=db, truck=truck)
+
+@router.get("/{truck_id}/trips_left", response_model=int)
+def get_trips_left(truck_id: int, distance: float, db: Session = Depends(get_db)):
+    
+    db_truck = crud.get_truck(db, truck_id)
+    if db_truck is None:
+        raise HTTPException(status_code=404, detail="Truck not found")
+
+    if distance <= 0:
+        raise HTTPException(status_code=400, detail="Distance must be greater than zero.")
+
+    trips_left = calculate_trips_left(
+        distance=distance,
+        brake_pads_km_left=db_truck.brake_pads_km_left,
+        oil_change_km_left=db_truck.oil_change_km_left
+    )
+    return trips_left
 
 @router.get("/", response_model=list[dto.Truck])
 def read_trucks(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
