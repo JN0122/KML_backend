@@ -15,6 +15,9 @@ from forecast import crud as crud_forecast
 from forecast import dto as dto_forecast
 from forecast import model as model_tank_residual
 
+from datetime import datetime, timedelta
+
+
 
 def seed_database(db: Session = Depends(get_db)):
     data_path = "data/"
@@ -60,7 +63,11 @@ def __seed_db_from_csv(path, station_id, db):
         if has_header:
             next(file_reader)
 
+        yesterday = datetime.now().date() - timedelta(days=1)
         for row in file_reader:
+            delivery_date = datetime.strptime(row[0], "%d.%m.%Y")
+            if delivery_date.date() > yesterday:
+                continue
             crud_delivery.create_delivery(
                 db=db, delivery=__create_new_delivery(station_id, row)
             )
