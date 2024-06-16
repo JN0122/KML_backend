@@ -47,6 +47,8 @@ def seed_database(db: Session = Depends(get_db)):
 def delete_database(db: Session = Depends(get_db)):
     db.query(model_delivery.Delivery).delete()
     db.query(model_tank_residual.TankResidual).delete()
+    db.query(model_truck.Truck).delete()
+    db.query(model_station.Station).delete()
     db.commit()
 
     return "Ok! Db removed"
