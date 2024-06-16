@@ -11,4 +11,3 @@ class Truck(Base):
     oil_change_km_left = Column(Integer, nullable=False)
     next_technical_inspection = Column(Date, nullable=False)
     
-    station = relationship("Station", back_populates="trucks")

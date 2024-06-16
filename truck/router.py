@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.database import get_db
 from truck import crud, dto
-from utilsalgorithm import calculate_trips_left
+from utilsalgorithm.calculations import calculate_trips_left
 
 router = APIRouter(
     prefix="/trucks",
