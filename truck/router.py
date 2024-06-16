@@ -89,7 +89,7 @@ def get_all_details_for_truck(truck_id: int, db: Session = Depends(get_db)):
 
     days_left_to_next_inspection = db_truck.next_technical_inspection - last_delivery.date
 
-    response = {
+    response = [{
         "station_id": station.id, 
         "distance_from_base": station.distance_from_base, 
         "next_technical_inspection":db_truck.next_technical_inspection,  
@@ -97,5 +97,5 @@ def get_all_details_for_truck(truck_id: int, db: Session = Depends(get_db)):
         **break_pads, 
         **oil, 
         **trips_left
-    }
+    }]
     return response
