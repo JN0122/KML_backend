@@ -124,11 +124,11 @@ def __create_truck_for_station(db: Session, station_id: int):
     # TODO truck parameters are hardcoded
     if station_id == 1: 
         inspection_date = "2025-03-12"
-        brake_pads = 50000
-        oil_change = 30000
+        last_brake_pads_change = "2024-06-12"
+        last_oil_change = "2024-02-20"
     else: 
         inspection_date = "2024-12-15"
-        brake_pads = 70000
-        oil_change = 20000
-    new_truck = dto_truck.TruckCreate(station_id=station_id, brake_pads_km_left=brake_pads, oil_change_km_left=oil_change, next_technical_inspection=inspection_date)
+        last_brake_pads_change = "2023-11-01"
+        last_oil_change = "2024-03-10"
+    new_truck = dto_truck.TruckCreate(station_id=station_id, brake_pads_km=100000, oil_change_km=50000, next_technical_inspection=inspection_date, last_brake_pads_change=last_brake_pads_change, last_oil_change=last_oil_change)
     crud_truck.create_truck(db, new_truck)

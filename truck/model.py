@@ -7,7 +7,9 @@ class Truck(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     station_id = Column(Integer, ForeignKey("stations.id"), nullable=False)
-    brake_pads_km_left = Column(Integer, nullable=False)
-    oil_change_km_left = Column(Integer, nullable=False)
+    brake_pads_km = Column(Integer, nullable=False)
+    oil_change_km = Column(Integer, nullable=False)
     next_technical_inspection = Column(Date, nullable=False)
+    last_oil_change = Column(Date, nullable=False)
+    last_brake_pads_change = Column(Date, nullable=False)
     

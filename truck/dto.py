@@ -3,9 +3,11 @@ from datetime import date
 
 class TruckBase(BaseModel):
     station_id: int
-    brake_pads_km_left: int
-    oil_change_km_left: int
+    brake_pads_km: int
+    oil_change_km: int
     next_technical_inspection: date
+    last_oil_change: date
+    last_brake_pads_change: date
 
 class TruckCreate(TruckBase):
     pass

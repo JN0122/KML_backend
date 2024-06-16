@@ -1,11 +1,7 @@
-def calculate_trips_left(distance: float, brake_pads_km_left: int, oil_change_km_left: int):
-    if distance <= 0:
-        raise ValueError("Distance must be greater than zero.")
-    
+def calculate_trips_left(distance: float, deliveries_count: int, durability_in_km: int):
     one_trip_distance = 2 * distance
     
-    brake_pads_trips_left = brake_pads_km_left // one_trip_distance
-    
-    oil_change_trips_left = oil_change_km_left // one_trip_distance
-    
-    return {"brake_pads_trips_left": brake_pads_trips_left, "oil_change_trips_left":oil_change_trips_left}
+    component_km_left = durability_in_km - one_trip_distance * deliveries_count
+    component_trips_left = component_km_left // one_trip_distance
+
+    return component_km_left, component_trips_left

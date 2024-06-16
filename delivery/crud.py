@@ -74,6 +74,17 @@ def read_latest_deliveries_for_station(db: Session, station_id: int, limit: int 
     return db_deliveries
 
 
+def get_deliveries_count_from_date_for_station(db: Session, station_id: int, date: date):
+    db_deliveries = db.query(model.Delivery)
+
+    db_deliveries = (
+        db_deliveries.filter(model.Delivery.station_id == station_id)
+        .order_by(model.Delivery.date.desc())
+        .filter(model.Delivery.date >= date)
+    )
+
+    return db_deliveries.count()
+
 def update_delivery(db: Session, delivery: dto.DeliveryCreate, delivery_id: int):
     db_delivery = (
         db.query(model.Delivery).filter(model.Delivery.id == delivery_id).first()
