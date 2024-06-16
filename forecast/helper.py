@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from delivery import crud as crud_delivery
 from forecast import crud as crud_forecast
+from forecast.dto import TankResidualCreate
 
 from forecast.holt_winters.RunModels import RunModels
 from forecast.tank_allocation.tank_allocation import allocate_tanks
@@ -15,6 +16,6 @@ def get_forecasts_with_tank_allocation_and_residuals(station_id: int, db: Sessio
     run_holt_winters = RunModels(delivery_models)
     forecasts = run_holt_winters.for_every_fuel(30)
 
-    last_tank_residual = crud_forecast.read_latest_tank_residual_for_station(db, station_id)
-
-    return allocate_tanks(forecasts, last_tank_residual)
+    last_tank_residual_model = crud_forecast.read_latest_tank_residual_for_station(db, station_id)
+    last_tank_residual_dto = TankResidualCreate.convert_model(last_tank_residual_model)
+    return allocate_tanks(forecasts, last_tank_residual_dto)

@@ -1,12 +1,11 @@
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
-from forecast import dto
+from forecast.dto import TankResidualCreate, TankPartition
 import pandas as pd
 
 
-def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate, iteration = 1):
+def allocate_tanks(dane: dict[pd.Series], tank_residual: TankResidualCreate, iteration = 1):
     # Przygotowanie danych wejściowych na podstawie inicjalizowanych wartości paliw
-
     paliwa = [
         ("ulg95", tank_residual.ulg95 + dane["ulg95"].iloc[iteration]),
         ("dk", tank_residual.dk + dane["dk"].iloc[iteration]),
@@ -20,12 +19,12 @@ def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate,
     # Zbiorniki zawsze te same
     pojemniki = [7400, 6100, 8500, 10000, 4000]
 
-    def przydziel_paliwo(paliwa, pojemniki, przypisanie=None):
+    def przydziel_paliwo(paliwa: dict[pd.Series], pojemniki:TankResidualCreate, przypisanie=None) -> tuple[list[TankPartition], TankResidualCreate]:
         if przypisanie is None:
             przypisanie = []
 
         if not paliwa or not pojemniki:
-            residual = dto.TankResidualBase(
+            residual = TankResidualCreate(
                 station_id=tank_residual.station_id, 
                 delivery_date=date, 
                 ulg95=0, 
@@ -33,7 +32,7 @@ def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate,
                 ultdk=0, 
                 ultsu=0
             )
-            residual.add_tank_residual_from_list(paliwa)
+            residual.add_fuel_from_list(paliwa)
             return przypisanie, residual
 
         # Sortujemy paliwa i pojemniki w kolejności malejącej
@@ -46,22 +45,22 @@ def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate,
 
         paliwo_typ, paliwo_ilosc = najw_paliwo
 
-        tank_data = {
-            "station_id": tank_residual.station_id,
-            "date": date,
-            "capacity": najw_pojemnik,
-            "ulg95": 0,
-            "dk": 0,
-            "ultsu": 0,
-            "ultdk": 0,
-            "tank_id": len(przypisanie) + 1
-        }
+        tank_data = TankPartition(
+            station_id=tank_residual.station_id,
+            delivery_date=date,
+            capacity=najw_pojemnik,
+            ulg95= 0,
+            dk=0,
+            ultsu=0,
+            ultdk=0,
+            tank_id=len(przypisanie) + 1
+        )
 
         # Jeśli pojemnik może pomieścić całe paliwo
         if paliwo_ilosc <= najw_pojemnik:
-            tank_data[paliwo_typ] = paliwo_ilosc
+            tank_data.add_fuel(paliwo_typ, paliwo_ilosc)
         else:
-            tank_data[paliwo_typ] = najw_pojemnik
+            tank_data.add_fuel(paliwo_typ, najw_pojemnik)
             # Dodajemy pozostałe paliwo z powrotem do listy paliw
             paliwa.append((paliwo_typ, paliwo_ilosc - najw_pojemnik))
 
@@ -72,8 +71,8 @@ def allocate_tanks(dane: dict[pd.Series], tank_residual: dto.TankResidualCreate,
 
     # Wywołanie funkcji
     przypisanie, nieprzydzielone_paliwa = przydziel_paliwo(paliwa, pojemniki)
-
     if nieprzydzielone_paliwa.is_empty():
+        tank_residual.add_fuel_from_partitions(przypisanie)
         return allocate_tanks(dane, tank_residual, iteration + 1)
 
     # Wynikowa struktura danych
