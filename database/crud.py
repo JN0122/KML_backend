@@ -15,6 +15,14 @@ from forecast import crud as crud_forecast
 from forecast import dto as dto_forecast
 from forecast import model as model_tank_residual
 
+from truck import crud as crud_truck
+from truck import dto as dto_truck
+from truck import model as model_truck
+
+from station import crud as crud_station
+from station import dto as dto_station
+from station import model as model_station
+
 from datetime import datetime, timedelta
 
 
@@ -29,6 +37,8 @@ def seed_database(db: Session = Depends(get_db)):
     for station_file in os.listdir(data_path):
         __seed_db_from_csv(os.path.join(data_path, station_file), station_id, db)
         __create_empty_tank_residual_for_station(db, station_id)
+        __create_stations(db, station_id)
+        __create_truck_for_station(db, station_id)
         station_id += 1
 
     return "Ok! Db seeded"
@@ -100,3 +110,23 @@ def __create_empty_tank_residual_for_station(db, i):
         ultdk=0,
     )
     crud_forecast.create_tank_residual(db, tank_residual)
+
+
+def __create_stations(db: Session, station_id: int):
+    ## TODO distance is hardcoded
+    new_station = dto_station.StationCreate(name=f"Stacja {station_id}", distance_from_base=station_id*100) 
+    crud_station.create_station(db=db, station=new_station)
+    
+
+def __create_truck_for_station(db: Session, station_id: int):
+    # TODO truck parameters are hardcoded
+    if station_id == 1: 
+        inspection_date = "2025-03-12"
+        brake_pads = 50000
+        oil_change = 30000
+    else: 
+        inspection_date = "2024-12-15"
+        brake_pads = 70000
+        oil_change = 20000
+    new_truck = dto_truck.TruckCreate(station_id=station_id, brake_pads_km_left=brake_pads, oil_change_km_left=oil_change, next_technical_inspection=inspection_date)
+    crud_truck.create_truck(db, new_truck)
